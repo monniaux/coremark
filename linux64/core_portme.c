@@ -16,8 +16,15 @@ limitations under the License.
 Original Author: Shay Gal-on
 */
 
+/* For clock_gettime() if compiling in C99 mode, including CompCert */
+#ifndef _DEFAULT_SOURCE
+#define  _DEFAULT_SOURCE 1
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #include "coremark.h"
 #if CALLGRIND_RUN
 #include <valgrind/callgrind.h>

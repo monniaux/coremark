@@ -1,0 +1,1 @@
+../Kalray-gcc/core_portme.mak
