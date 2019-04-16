@@ -276,15 +276,28 @@ void matrix_mul_vect(ee_u32 N, MATRES *C, MATDAT *A, MATDAT *B) {
 	Multiply a matrix by a matrix.
 	Basic code is used in many algorithms, mostly with minor changes such as scaling.
 */
+//#define DM_OPTIMIZED
 void matrix_mul_matrix(ee_u32 N, MATRES *C, MATDAT *A, MATDAT *B) {
 	ee_u32 i,j,k;
 	for (i=0; i<N; i++) {
 		for (j=0; j<N; j++) {
+#ifdef DM_OPTIMIZED
+		  MATRES total = 0;
+		  MATDAT *pa = A+i*N;
+		  MATDAT *pb = B+j;
+		  for(k=0; k<N; k++) {
+		    total += (MATRES) (*pa) * (MATRES) (*pb);
+		    pa += 1;
+		    pb += N;
+		  }
+		  C[i*N+j] = total;
+#else
 			C[i*N+j]=0;
 			for(k=0;k<N;k++)
 			{
 				C[i*N+j]+=(MATRES)A[i*N+k] * (MATRES)B[k*N+j];
 			}
+#endif
 		}
 	}
 }
